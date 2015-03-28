@@ -8,10 +8,12 @@ app = Flask(__name__)
 
 DATE_FORMAT = '%m/%d/%Y'
 DEFAULT_COUNTY = 'PHILADELPHIA'
+ERROR_MESSAGE = {'error': 'Unknown error encountered attempting to get registration status.'}
+
 DESCRIPTION = {
     'info': 'This endpoint passes along voter registration validation requests to ' +
             'https://www.pavoterservices.state.pa.us, then returns the info found as JSON. ' +
-            'Returns empty object if error encountered or registration info not found. ' +
+            'Returns empty object if unhandled error encountered. ' +
             'To use, POST JSON.',
     'exampleRequest': {
         'firstName':'firstname',
@@ -20,7 +22,7 @@ DESCRIPTION = {
         'dob': 'MM/DD/YYYY',
         'county':'Philadelphia'
     },
-    'exampleResponse': {
+    'exampleGoodResponse': {
       'registration': {
         'county': 'PHILA', 
         'division': '00', 
@@ -39,8 +41,17 @@ DESCRIPTION = {
         'status': 'ACTIVE', 
         'ward': '00'
       }
+    },
+    'exampleResponseNotFound': {
+        'registration': {
+            'notFound': 'No Voter Registration information could be found for the data provided.'
+        }
+    },
+    'exampleErrorResponse': {
+        'registration': ERROR_MESSAGE
     }
 }
+
 
 @app.route('/pavoter', methods=['POST', 'GET'])
 def get_voterinfo():
@@ -70,7 +81,10 @@ def get_voterinfo():
 
         response = get_registration(county, first_name, middle_name, last_name, dob)
     except:
-        response = {}
+        response = jsonify({'registration': ERROR_MESSAGE})
+
+    if not response:
+        response = jsonify({'registration': ERROR_MESSAGE})
 
     return jsonify({'registration': response})
 

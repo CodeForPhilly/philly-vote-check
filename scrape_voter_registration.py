@@ -5,6 +5,7 @@ import BeautifulSoup
 import re
 import requests
 
+NOT_FOUND_MESSAGE = 'No Voter Registration information could be found for the data provided.'
 URL = 'https://www.pavoterservices.state.pa.us/Pages/voterregistrationstatus.aspx'
 STATUS_REGEX = re.compile(r'^(.+?)\(Date of Birth: (\d+/\d+/\d+)\) is registered to vote inCountyStatus :(.+?)Party  :(.+?)If you wish')
 WARD_REGEX = re.compile(r'^Polling Place Address for (.+?) WD (\d+) DIV (\d+)$')
@@ -56,6 +57,14 @@ def get_registration(county, first_name, middle_name, last_name, dob):
 
     # span with name, dob, party, and registration status
     status_span = reg.find(id='ctl00_ContentPlaceHolder1_regstatus')
+
+    if not status_span:
+        # check for span saying no info found
+        not_found_span = reg.find(id='ctl00_ContentPlaceHolder1_lblNotFound')
+        if not_found_span:
+            return {'notFound': NOT_FOUND_MESSAGE}
+        else:
+            return {}
 
     status = STATUS_REGEX.search(status_span.text)
     found_name, found_dob, found_status, found_party = status.groups()
