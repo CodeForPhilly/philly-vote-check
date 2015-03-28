@@ -8,10 +8,12 @@ app = Flask(__name__)
 DEFAULT_COUNTY = 'PHILADELPHIA'
 DESCRIPTION = {
     'info': 'This endpoint passes along voter registration validation requests to ' +
-            'https://www.pavoterservices.state.pa.us, then returns the info found as JSON.' +
-            'Returns empty object if error encountered or registration info not found.',
+            'https://www.pavoterservices.state.pa.us, then returns the info found as JSON. ' +
+            'Returns empty object if error encountered or registration info not found. ' +
+            'To use, POST JSON.',
     'exampleRequest': {
         'firstName':'firstname',
+        'middleName': 'veryoptional',
         'lastName':'lastname',
         'dob': 'MM/DD/YYYY',
         'county':'Philadelphia'
