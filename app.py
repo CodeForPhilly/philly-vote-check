@@ -1,10 +1,12 @@
 #!env/bin/python
+from dateutil.parser import parse
 from flask import abort, Flask, jsonify, request
 
 from scrape_voter_registration import get_registration
 
 app = Flask(__name__)
 
+DATE_FORMAT = '%m/%d/%Y'
 DEFAULT_COUNTY = 'PHILADELPHIA'
 DESCRIPTION = {
     'info': 'This endpoint passes along voter registration validation requests to ' +
@@ -59,6 +61,13 @@ def get_voterinfo():
         first_name = request.json.get('firstName')
         last_name = request.json.get('lastName')
         dob = request.json.get('dob')
+        try:
+            # convert date to mm/dd/yyyy format
+            dob_date = parse(dob)
+            dob = dob_date.strftime(DATE_FORMAT)
+        except:
+            abort(400)
+
         response = get_registration(county, first_name, middle_name, last_name, dob)
     except:
         response = {}
