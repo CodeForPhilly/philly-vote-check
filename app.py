@@ -6,9 +6,42 @@ from scrape_voter_registration import get_registration
 app = Flask(__name__)
 
 DEFAULT_COUNTY = 'PHILADELPHIA'
+DESCRIPTION = {
+    'info': 'This endpoint passes along voter registration validation requests to ' +
+            'https://www.pavoterservices.state.pa.us, then returns the info found as JSON.' +
+            'Returns empty object if error encountered or registration info not found.',
+    'exampleRequest': {
+        'firstName':'firstname',
+        'lastName':'lastname',
+        'dob': 'MM/DD/YYYY',
+        'county':'Philadelphia'
+    },
+    'exampleResponse': {
+      'registration': {
+        'county': 'PHILA', 
+        'division': '00', 
+        'dob': 'DD/MM/YYYY', 
+        'name': 'FIRST MIDDLE LAST', 
+        'party': 'PARTY', 
+        'polling_place': {
+          'accessibility': 'String describing handicap accessibility', 
+          'address': {
+            'city': 'PHILADELPHIA', 
+            'state': 'PA', 
+            'street': '111 SOME ST'
+          }, 
+          'name': 'POLLING LOCATION NAME'
+        }, 
+        'status': 'ACTIVE', 
+        'ward': '00'
+      }
+    }
+}
 
-@app.route('/pavoter', methods=['POST'])
-def get_stuff():
+@app.route('/pavoter', methods=['POST', 'GET'])
+def get_voterinfo():
+    if request.method == 'GET':
+        return jsonify({'description': DESCRIPTION})
     required_fields = ['firstName', 'lastName', 'dob']
     if not request.json:
         abort(400)
@@ -32,7 +65,7 @@ def get_stuff():
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    return 'Hello, World!'
 
 if __name__ == '__main__':
     app.run(debug=True)
