@@ -92,6 +92,9 @@
                         $('#not_accessible_msg').show();
                     }
                 });
+                $('find_accessible_places_button').click(function(e){
+                    
+                });
             });
             function processResult(data) {
                 alert("data: " + data);
@@ -181,7 +184,9 @@
                     </iframe>
                 <div id="not_accessible_msg" class="error_msg" style="display:none;"></div>
                 <div class="right" style="display: none;" id="accessible_places_btn_div">
+                    <form action="accessible_places.html">
                     <button type="submit" class="btn btn-default submit_button" id="find_accessible_places_button">Find accessible places</button>
+                    </form>
                 </div>
             </div>
         </div>
