@@ -48,7 +48,7 @@ and open the template in the editor.
 }
 
 .map_panel{
-    width:45%;
+    width:630px;
     margin-top: 50px;
 }
 
@@ -172,15 +172,4 @@ and open the template in the editor.
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
-}
-
-.error_msg{
-    margin-top: 10px;
-    color: red;
-}
-
-btn-default.apply_button{
-    color: #fff;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
 }
