@@ -160,3 +160,8 @@ and open the template in the editor.
     -webkit-transform: scale(1.0);
   }
 }
+
+#error_msg_panel{
+    margin-top: 10px;
+    color: red;
+}
