@@ -165,3 +165,9 @@ and open the template in the editor.
     margin-top: 10px;
     color: red;
 }
+
+btn-default.apply_button{
+    color: #fff;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
