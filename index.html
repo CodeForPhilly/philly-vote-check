@@ -3,7 +3,7 @@
     <head>
         <title>PhillyVoteCheck</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <!-- Latest compiled and minified JavaScript -->
@@ -23,6 +23,9 @@
             $(document).ready(function () {
                 $('#verify_button').click(function (e) {
                     e.preventDefault();
+                    if ($("#error_msg_panel").is(':visible')){
+                        $("#error_msg_panel").hide();  
+                    }
                     var fName = $('#firstName').val();
                     var lName = $('#lastName').val();
                     var dateOfBirth = $('#dob').val();
@@ -79,8 +82,9 @@
                     var encodedAddress = encodeURIComponent(address);
                     $('#request_panel').hide();
                     $('#results_panel').hide();
-                    $('#map_iframe').attr('src', mapURL+encodedAddress)
+                    $('#map_iframe').attr('src', mapURL + encodedAddress)
                     $('#polling_place_map').show();
+                    $('#accessible_places_btn_div').show();
                 });
             });
             function processResult(data) {
@@ -156,15 +160,24 @@
                 </div>
             </div>
         </div>
-        <div class="center registered_box" id="polling_place_map" style="display: none;">
-                <iframe
-                    id="map_iframe"
-                width="600"
-                height="450"
-                frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cj60UVxHhj2ZawATBb014EFHYtXudtQ
-                &q=City+Hall,Philadelphia+PA">
-            </iframe>
+        <div class="panel panel-success center map_panel" id="polling_place_map" style="display: none;">
+            <div class="panel-heading">
+                <h3 class="panel-title">My Polling Place</h3>
+            </div>
+            <div class="panel-body ">              
+                    <iframe
+                        id="map_iframe"
+                        width="600"
+                        height="450"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cj60UVxHhj2ZawATBb014EFHYtXudtQ
+                        &q=330+Race+St,Philadelphia+PA">
+                    </iframe>
+                
+                <div class="right" style="display: none;" id="accessible_places_btn_div">
+                    <button type="submit" class="btn btn-default submit_button" id="find_accessible_places_button">Find accessible places</button>
+                </div>
+            </div>
         </div>
     </body>
 </html>
