@@ -161,7 +161,7 @@ and open the template in the editor.
   }
 }
 
-#error_msg_panel{
+.error_msg{
     margin-top: 10px;
     color: red;
 }
