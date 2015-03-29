@@ -8,13 +8,21 @@ and open the template in the editor.
     Author     : mwangia
 */
 
+.header-img {
+    background-position: center;
+    background-image: url('/img/philadelhia_silhouette.png');
+    min-height: 348px;
+    width: 100%;
+}
+
 .center{
     margin-left: auto;
     margin-right: auto;
 }
 .registered_box{
     width:40%;
-    margin-top: 50px;
+    margin-top: -300px;
+    background-color: rgba(192,192,192,0.9);
 }
 .registered_box input[type=text]{
     margin-top: 5px;
