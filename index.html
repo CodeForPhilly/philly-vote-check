@@ -19,6 +19,7 @@
             var street;
             var city;
             var state;
+            var accessible;
             var mapURL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cj60UVxHhj2ZawATBb014EFHYtXudtQ&q=";
             $(document).ready(function () {
                 $('#verify_button').click(function (e) {
@@ -52,6 +53,7 @@
                             $("#error_msg_panel").show();
                             return;
                         }
+                        accessible = jsonObj.registration.polling_place.accessibility;
                         ward = jsonObj.registration.ward;
                         division = jsonObj.registration.division;
                         street =jsonObj.registration.polling_place.address.street;
@@ -84,8 +86,11 @@
                     $('#results_panel').hide();
                     $('#map_iframe').attr('src', mapURL + encodedAddress)
                     $('#polling_place_map').show();
-                    $('#accessible_places_btn_div').show();
-                    $('#not_accessible_msg').show();
+                    if (accessible == "Handicap not accessible"){
+                        $('#accessible_places_btn_div').show();
+                        $('#not_accessible_msg').append(accessible)
+                        $('#not_accessible_msg').show();
+                    }
                 });
             });
             function processResult(data) {
@@ -112,7 +117,7 @@
                         </div>
                     </form>
                 </div>
-                <div id="error_msg_panel" style="display:none;"></div>
+                <div id="error_msg_panel" class="error_msg" style="display:none;"></div>
             </div>
             <div id="registrationSpinner" class="well well-lg center hidden">
                 <div class="spinner">
@@ -154,9 +159,6 @@
                         <input type="hidden" name="my_division" id="my_division" />
                         <div id="accessibility_result"></div>
                         </div>
-                        <div id="not_accessible_msg" style="display:none;">
-                            
-                        </div>
                         <div class="right">
                             <button type="submit" class="btn btn-default submit_button" id="find_polling_button">Find my polling place</button>
                         </div>
@@ -177,7 +179,7 @@
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cj60UVxHhj2ZawATBb014EFHYtXudtQ
                         &q=330+Race+St,Philadelphia+PA">
                     </iframe>
-                
+                <div id="not_accessible_msg" class="error_msg" style="display:none;"></div>
                 <div class="right" style="display: none;" id="accessible_places_btn_div">
                     <button type="submit" class="btn btn-default submit_button" id="find_accessible_places_button">Find accessible places</button>
                 </div>
