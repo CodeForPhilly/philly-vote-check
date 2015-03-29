@@ -43,7 +43,7 @@ and open the template in the editor.
     float: right;
     margin-top: 10px;
 }
-#error_msg_panel{
+#msg_panel{
     margin-top: 10px;
     color: red;
 }

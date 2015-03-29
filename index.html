@@ -27,7 +27,7 @@
                     var lName = $('#lastName').val();
                     var dateOfBirth = $('#dob').val();
                     var params = {firstName: fName, lastName: lName, dob: dateOfBirth};
-                    $('#registrationForm').hide();
+                    $('#request_panel').addClass('hidden');
                     $('#registrationSpinner').removeClass('hidden');
                     $.ajax({
                         method: 'POST',
@@ -36,8 +36,11 @@
                         dataType: 'json',
                         contentType: ' application/json; charset=utf-8',
                     }).done(function (data) {
+                        console.log(data);
                         var jsonObj = $.parseJSON(JSON.stringify(data));
                         if (jsonObj.registration.hasOwnProperty('notFound')) {
+                            $('#registrationSpinner').addClass('hidden');
+                            $('#request_panel').removeClass('hidden');
                             $("#msg_panel").append(jsonObj.registration.notFound);
                             $("#msg_panel").show();
                             return;
@@ -61,7 +64,7 @@
                     }).fail(function (error) {
                         console.log(error.status + ': ' + error.statusText);
                         $('#registrationSpinner').addClass('hidden');
-                        $('#registrationForm').show();
+                        $('#request_panel').removeClass('hidden');
                     });
 
 //                    $.ajax({
@@ -97,7 +100,7 @@
             <div class="well well-lg center registered_box" id="request_panel">
                 <div>Am I registered?</div>
                 <div class="input-group">
-                    <form id="#registrationForm">
+                    <form>
                         <div>
                             <input type="text" class="form-control" placeholder="First Name" id="firstName">
                             <input type="text" class="form-control" placeholder="Last Name" id="lastName">
@@ -109,26 +112,28 @@
                         </div>
                     </form>
                 </div>
-                <div id="msg_panel" style="display:none;">
-                <div id="registrationSpinner" class="spinner hidden">
-                  <div class="spinner-container container1">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                  </div>
-                  <div class="spinner-container container2">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                  </div>
-                  <div class="spinner-container container3">
-                    <div class="circle1"></div>
-                    <div class="circle2"></div>
-                    <div class="circle3"></div>
-                    <div class="circle4"></div>
-                  </div>
+                <div id="msg_panel" style="display:none;"></div>
+            </div>
+            <div id="registrationSpinner" class="well well-lg center hidden">
+                <div class="spinner">
+                    <div class="spinner-container container1">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
+                    <div class="spinner-container container2">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
+                    <div class="spinner-container container3">
+                        <div class="circle1"></div>
+                        <div class="circle2"></div>
+                        <div class="circle3"></div>
+                        <div class="circle4"></div>
+                    </div>
                 </div>
             </div>
             <div class="well well-lg center registered_box" id="results_panel" style="display: none;">
