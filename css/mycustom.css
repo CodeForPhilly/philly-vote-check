@@ -61,6 +61,10 @@ and open the template in the editor.
     color: red;
 }
 
+#polling_place_result {
+    font-weight: bold;
+}
+
 /* loading spinner */
 .spinner {
   margin: 100px auto;

@@ -56,9 +56,11 @@
                         accessible = jsonObj.registration.polling_place.accessibility;
                         ward = jsonObj.registration.ward;
                         division = jsonObj.registration.division;
+                        placename = jsonObj.registration.polling_place.name;
                         street =jsonObj.registration.polling_place.address.street;
                         city =jsonObj.registration.polling_place.address.city;
                         state = jsonObj.registration.polling_place.address.state;
+                        $('#polling_place_result').text(placename);
                         $("#street").append("Street: " + street);
                         $("#my_street").attr("value", street);
                         $("#city").append("City " + city);
@@ -69,7 +71,6 @@
                         $("#my_division").attr("value", division);
                         $('#registrationSpinner').addClass('hidden');
                         $("#results_panel").show();
-                        console.log(data);
                     }).fail(function (error) {
                         console.log(error.status + ': ' + error.statusText);
                         $('#registrationSpinner').addClass('hidden');
