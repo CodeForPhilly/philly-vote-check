@@ -27,6 +27,8 @@
                     var lName = $('#lastName').val();
                     var dateOfBirth = $('#dob').val();
                     var params = {firstName: fName, lastName: lName, dob: dateOfBirth};
+                    $('#registrationForm').hide();
+                    $('#registrationSpinner').removeClass('hidden');
                     $.ajax({
                         method: 'POST',
                         url: 'http://pavoter.banderkat.com/pavoter',
@@ -34,16 +36,17 @@
                         dataType: 'json',
                         contentType: ' application/json; charset=utf-8',
                     }).done(function (data) {
-                        alert("success");
                         var jsonObj = $.parseJSON(JSON.stringify(data));
+                        if (jsonObj.registration.hasOwnProperty('notFound')) {
+                            $("#msg_panel").append(jsonObj.registration.notFound);
+                            $("#msg_panel").show();
+                            return;
+                        }
                         ward = jsonObj.registration.ward;
                         division = jsonObj.registration.division;
                         street =jsonObj.registration.polling_place.address.street;
                         city =jsonObj.registration.polling_place.address.city;
                         state = jsonObj.registration.polling_place.address.state;
-                        alert("county:" + jsonObj.registration.county);
-                        alert("ward:" + ward);
-                        alert("division:" + division);
                         $("#street").append("Street: " + street);
                         $("#my_street").attr("value", street);
                         $("#city").append("City " + city);
@@ -52,12 +55,13 @@
                         $("#my_state").attr("value", state);
                         $("#division").append("Division: " + division);
                         $("#my_division").attr("value", division);
+                        $('#registrationSpinner').addClass('hidden');
                         $("#results_panel").show();
                         console.log(data);
                     }).fail(function (error) {
-                        alert("failure");
-                        console.log('rats.');
                         console.log(error.status + ': ' + error.statusText);
+                        $('#registrationSpinner').addClass('hidden');
+                        $('#registrationForm').show();
                     });
 
 //                    $.ajax({
@@ -75,13 +79,10 @@
                     var myDivision = $('#my_division').val();
                     var address = $('#my_street').val() + " " + $('#my_city').val() + " " + $('#my_state').val();
                     var encodedAddress = encodeURIComponent(address);
-                    alert("address:" + encodedAddress);
                     $('#request_panel').hide();
                     $('#results_panel').hide();
-                    alert("mapurl:" + mapURL+encodedAddress);
                     $('#map_iframe').attr('src', mapURL+encodedAddress)
                     $('#polling_place_map').show();
-
                 });
             });
             function processResult(data) {
@@ -96,7 +97,7 @@
             <div class="well well-lg center registered_box" id="request_panel">
                 <div>Am I registered?</div>
                 <div class="input-group">
-                    <form>
+                    <form id="#registrationForm">
                         <div>
                             <input type="text" class="form-control" placeholder="First Name" id="firstName">
                             <input type="text" class="form-control" placeholder="Last Name" id="lastName">
@@ -107,6 +108,27 @@
                             <button type="submit" class="btn btn-default submit_button" id="verify_button">Verify</button>
                         </div>
                     </form>
+                </div>
+                <div id="msg_panel" style="display:none;">
+                <div id="registrationSpinner" class="spinner hidden">
+                  <div class="spinner-container container1">
+                    <div class="circle1"></div>
+                    <div class="circle2"></div>
+                    <div class="circle3"></div>
+                    <div class="circle4"></div>
+                  </div>
+                  <div class="spinner-container container2">
+                    <div class="circle1"></div>
+                    <div class="circle2"></div>
+                    <div class="circle3"></div>
+                    <div class="circle4"></div>
+                  </div>
+                  <div class="spinner-container container3">
+                    <div class="circle1"></div>
+                    <div class="circle2"></div>
+                    <div class="circle3"></div>
+                    <div class="circle4"></div>
+                  </div>
                 </div>
             </div>
             <div class="well well-lg center registered_box" id="results_panel" style="display: none;">
