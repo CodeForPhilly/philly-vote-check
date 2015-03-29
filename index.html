@@ -26,7 +26,11 @@
                     var fName = $('#firstName').val();
                     var lName = $('#lastName').val();
                     var dateOfBirth = $('#dob').val();
+                    var county = $('#county').val();
                     var params = {firstName: fName, lastName: lName, dob: dateOfBirth};
+                    if (county) {
+                        params.county = county;
+                    }
                     $('#request_panel').addClass('hidden');
                     $('#registrationSpinner').removeClass('hidden');
                     $.ajax({
@@ -66,15 +70,6 @@
                         $('#registrationSpinner').addClass('hidden');
                         $('#request_panel').removeClass('hidden');
                     });
-
-//                    $.ajax({
-//                        url: endpointURL,
-//                        crossDomain: true,
-//                        dataType: 'json',
-//                        data: params,
-//                        method: 'POST',
-//                        contentType: 'application/json; charset=utf-8'
-//                    });
                 });
                 $('#find_polling_button').click(function (e) {
                     e.preventDefault();
