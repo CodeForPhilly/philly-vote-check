@@ -7,7 +7,7 @@ import requests
 
 NOT_FOUND_MESSAGE = 'No Voter Registration information could be found for the data provided.'
 URL = 'https://www.pavoterservices.state.pa.us/Pages/voterregistrationstatus.aspx'
-STATUS_REGEX = re.compile(r'^(.+?)\(Date of Birth: (\d+/\d+/\d+)\) is registered to vote inCountyStatus :(.+?)Party  :(.+?)If you wish')
+STATUS_REGEX = re.compile(r'^(.+?)\(Date of Birth: (\d+/\d+/\d+)\) is registered to vote in.+?Status :(.+?)Party  :(.+?)If you wish')
 WARD_REGEX = re.compile(r'^Polling Place Address for (.+?) WD (\d+) DIV (\d+)$')
 
 HEADERS = {
