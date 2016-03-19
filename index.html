@@ -22,15 +22,55 @@
             var accessible;
             var mapURL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cj60UVxHhj2ZawATBb014EFHYtXudtQ&q=";
             $(document).ready(function () {
+                $('#firstName').change(function() {
+                    if ($('#firstName').val()) {
+                        $('#firstName').removeClass('error');
+                    }
+                });
+                $('#lastName').change(function() {
+                    if ($('#lastName').val()) {
+                        $('#lastName').removeClass('error');
+                    }
+                });
+                $('#dob').change(function() {
+                    if ($('#dob').val()) {
+                        $('#dob').removeClass('error');
+                    }
+                });
+
                 $('#verify_button').click(function (e) {
                     e.preventDefault();
                     if ($("#error_msg_panel").is(':visible')){
-                        $("#error_msg_panel").hide();  
+                        $("#error_msg_panel").hide();
+                        $("#error_msg").html('');
+                        $('#dob').removeClass('error');
+                        $('#lastName').removeClass('error');
+                        $('#firstName').removeClass('error');
                     }
+
                     var fName = $('#firstName').val();
                     var lName = $('#lastName').val();
                     var dateOfBirth = $('#dob').val();
                     var county = $('#county').val();
+
+                    if (!fName) {
+                        $('#firstName').addClass('error');
+                    }
+
+                    if (!lName) {
+                        $('#lastName').addClass('error');
+                    }
+
+                    if (!dateOfBirth) {
+                        $('#dob').addClass('error');
+                    }
+
+                    if (!fName || !lName || !dateOfBirth) {
+                        $('#error_msg').html('<p><b>Missing required field.</b></p>');
+                        $("#error_msg_panel").show();
+                        return;
+                    }
+
                     var params = {firstName: fName, lastName: lName, dob: dateOfBirth};
                     if (county) {
                         params.county = county;
@@ -49,8 +89,8 @@
                         if (data.registration.hasOwnProperty('notFound')) {
                             $('#registrationSpinner').addClass('hidden');
                             $('#request_panel').removeClass('hidden');
-                            $("#error_msg_panel").append('<p><b>' + data.registration.notFound + '</b></p>');
-                            $('#error_msg_panel').append('<p><b></b><a href="https://www.pavoterservices.state.pa.us/Pages/VoterRegistrationApplication.aspx" target="_blank">Go register!</p>')
+                            $("#error_msg").html('<p><b>' + data.registration.notFound + '</b></p>');
+                            $('#error_msg').append('<p><b></b><a href="https://www.pavoterservices.state.pa.us/Pages/VoterRegistrationApplication.aspx" target="_blank">Go register!</p>')
                             $("#error_msg_panel").show();
                             return;
                         }
@@ -125,7 +165,7 @@
                         </div>
                     </form>
                 </div>
-                <div id="error_msg_panel" class="error_msg" style="display:none;"></div>
+                <div id="error_msg_panel" class="error_msg" style="display:none;"><p id=error_msg></p></div>
             </div>
             <div id="registrationSpinner" class="well well-lg center hidden">
                 <div class="spinner">

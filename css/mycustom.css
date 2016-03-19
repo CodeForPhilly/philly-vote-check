@@ -12,9 +12,13 @@ body {
   font-size: large;
 }
 
+.error {
+ border:1px solid red;
+}
+
 .header-img {
     background-position: center;
-    background-image: url('//flibbertigibbet.github.io/pavoterservices-passthrough//img/philadelhia_silhouette.png');
+    background-image: url('//flibbertigibbet.github.io/pavoterservices-passthrough/img/philadelhia_silhouette.png');
     min-height: 348px;
     width: 100%;
 }
