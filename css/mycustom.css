@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : mwangia
 */
 
+body {
+  font-size: large;
+}
+
 .header-img {
     background-position: center;
     background-image: url('//flibbertigibbet.github.io/pavoterservices-passthrough//img/philadelhia_silhouette.png');
