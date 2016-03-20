@@ -18,7 +18,7 @@ body {
 
 .header-img {
     background-position: center;
-    background-image: url('//flibbertigibbet.github.io/pavoterservices-passthrough/img/philadelhia_silhouette.png');
+    background-image: url('/philly-vote-check/img/philadelhia_silhouette.png');
     min-height: 348px;
     width: 100%;
 }
