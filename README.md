@@ -16,4 +16,4 @@ source env/bin/activate
 ```
 
 ## To exit virtualenv
-```deactivate```
+`deactivate`
