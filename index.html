@@ -158,9 +158,9 @@
         <div class="container-fluid" style="width:100%">
 
             <div class="well well-lg center registered_box" id="request_panel">
-                <div>Am I registered?</div>
+                <div>Check if you are registered and see your polling location.</div>
                 <div class="input-group">
-                    <form>
+                    <form id="verify_form">
                         <div>
                             <input type="text" class="form-control" placeholder="First Name" id="firstName">
                             <input type="text" class="form-control" placeholder="Last Name" id="lastName">
@@ -172,7 +172,19 @@
                         </div>
                     </form>
                 </div>
-                <div id="error_msg_panel" class="error_msg" style="display:none;"><p id=error_msg></p></div>
+                <br />
+                <div>Or, find the polling location for an address.</div>
+                <div class="input-group" style="width:100%">
+                    <form id="address_search_form">
+                        <div>
+                            <input type="text" class="form-control" placeholder="200 Market Street" id="address">
+                        </div>
+                        <div class="right">
+                            <button type="submit" class="btn btn-default submit_button" id="search_button">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="search_error_msg_panel" class="error_msg" style="display:none;"><p id=search_error_msg></p></div>
             </div>
             <div id="registrationSpinner" class="well well-lg center hidden">
                 <div class="spinner">
