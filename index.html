@@ -85,7 +85,14 @@
                         dataType: 'json',
                         contentType: ' application/json; charset=utf-8',
                     }).done(function (data) {
-                        data = JSON.parse(data);
+                        try {
+                            data = JSON.parse(data);
+                        } catch(e) {
+                            $("#error_msg").html('<p><b>Error checking registration. Is form data correct?</b></p>');
+                            $("#error_msg_panel").show();
+                            return;
+                        }
+                        
                         if (data.registration.hasOwnProperty('notFound')) {
                             $('#registrationSpinner').addClass('hidden');
                             $('#request_panel').removeClass('hidden');
