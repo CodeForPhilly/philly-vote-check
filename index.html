@@ -13,7 +13,8 @@
         <link href='//fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
         <link href="css/mycustom.css" rel="stylesheet" type='text/css'> 
         <script>
-            var endpointURL = " https://svzgyfu54k.execute-api.us-east-1.amazonaws.com/prod/pa-voter-registration";
+            var endpointURL = "https://svzgyfu54k.execute-api.us-east-1.amazonaws.com/prod/pa-voter-registration";
+            var addressEndpointURL = "https://ov099d2ke0.execute-api.us-east-1.amazonaws.com/prod/polling-location";
             var ward;
             var division;
             var street;
@@ -36,6 +37,94 @@
                     if ($('#dob').val()) {
                         $('#dob').removeClass('error');
                     }
+                });
+
+                $('#address').change(function() {
+                    if ($('#address').val()) {
+                        $('#address').removeClass('error');
+                    }
+                });
+
+                $('#search_button').click(function (e) {
+                    e.preventDefault();
+                    if ($("#search_error_msg_panel").is(':visible')){
+                        $("#search_error_msg_panel").hide();
+                        $("#search_error_msg").html('');
+                        $('#address').removeClass('error');
+                    }
+
+                    var address = $('#address').val();
+                    if (!address) {
+                        $('#address').addClass('error');
+                        $('#search_error_msg').html('<p><b>Address is required.</b></p>');
+                        $("#search_error_msg_panel").show();
+                        return;
+                    }
+
+                    $('#request_panel').addClass('hidden');
+                    $('#registrationSpinner').removeClass('hidden');
+                    $.ajax({
+                        crossDomain: true,
+                        method: 'POST',
+                        url: addressEndpointURL,
+                        data: JSON.stringify({"address": address}),
+                        dataType: 'json',
+                        contentType: ' application/json; charset=utf-8',
+                    }).done(function (data) {
+                        try {
+                            data = JSON.parse(data);
+                        } catch(e) {
+                            $("#error_msg").html('<p><b>Error looking up address.</b></p>');
+                            $("#error_msg_panel").show();
+                            return;
+                        }
+                        
+                        if (!data || data.length == 0) {
+                            $('#registrationSpinner').addClass('hidden');
+                            $('#request_panel').removeClass('hidden');
+                            $("#search_error_msg").html('<p><b>Could not locate information for address.</b></p>');
+                            $("#search_error_msg_panel").show();
+                            return;
+                        }
+
+                        // TODO: offer (autocomplete?) alternatives when multiple potential matches found
+                        var found = data[0];
+
+                        if (!found.polling_locations || found.polling_locations.length == 0) {
+                            $('#registrationSpinner').addClass('hidden');
+                            $('#request_panel').removeClass('hidden');
+                            $("#search_error_msg").html('<p><b>Polling location not found for address.</b></p>');
+                            $("#search_error_msg_panel").show();
+                            return;
+                        }
+
+                        // TODO: are there ever multiple polling locations? if so, handle them
+                        var polling_location = found.polling_locations[0];
+
+                        // TODO: also include parking information
+                        accessible = polling_location.building_description;
+                        ward = found.ward;
+                        division = found.division;
+                        placename = polling_location.location;
+                        street = polling_location.display_address;
+                        city = 'Philadelphia'; // TODO: does API return results from elsewhere?
+                        state = 'PA';
+                        $('#polling_place_result').text(placename);
+                        $("#street").html("Street: " + street);
+                        $("#my_street").attr("value", street);
+                        $("#city").html("City " + city);
+                        $("#my_city").attr("value", city);
+                        $("#state").html("State: " + state);
+                        $("#my_state").attr("value", state);
+                        $("#division").html("Division: " + division);
+                        $("#my_division").attr("value", division);
+                        $('#registrationSpinner').addClass('hidden');
+                        $("#results_panel").show();
+                    }).fail(function (error) {
+                        console.error(error.status + ': ' + error.statusText);
+                        $('#registrationSpinner').addClass('hidden');
+                        $('#request_panel').removeClass('hidden');
+                    });
                 });
 
                 $('#verify_button').click(function (e) {
@@ -109,13 +198,13 @@
                         city =data.registration.polling_place.address.city;
                         state = data.registration.polling_place.address.state;
                         $('#polling_place_result').text(placename);
-                        $("#street").append("Street: " + street);
+                        $("#street").html("Street: " + street);
                         $("#my_street").attr("value", street);
-                        $("#city").append("City " + city);
+                        $("#city").html("City " + city);
                         $("#my_city").attr("value", city);
-                        $("#state").append("State: " + state);
+                        $("#state").html("State: " + state);
                         $("#my_state").attr("value", state);
-                        $("#division").append("Division: " + division);
+                        $("#division").html("Division: " + division);
                         $("#my_division").attr("value", division);
                         $('#registrationSpinner').addClass('hidden');
                         $("#results_panel").show();
@@ -137,7 +226,7 @@
                     $('#polling_place_map').show();
                     if (accessible == "Handicap not accessible"){
                         $('#accessible_places_btn_div').show();
-                        $('#not_accessible_msg').append(accessible)
+                        $('#not_accessible_msg').html(accessible)
                         $('#not_accessible_msg').show();
                     }
                 });
